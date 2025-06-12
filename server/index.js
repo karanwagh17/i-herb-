@@ -14,8 +14,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 // ✅ CORS setup - allow frontend deployed URL or localhost for development
-app.use(cors({
-  origin: "http://localhost:5173",
+app.use(cors(
+  origin: "https://i-herb-hx77.vercel.app",
   credentials: true,
 }));
 
