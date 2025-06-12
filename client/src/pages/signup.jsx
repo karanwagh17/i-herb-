@@ -21,7 +21,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       dispatch(signupStart());
-      const res = await axios.post(`http://localhost:9999/api/user/signup`, {
+      const res = await axios.post(`${import.meta.env.VITE_BASEURL}/api/user/signup`, {
         email: Email,
         name,
         password,
