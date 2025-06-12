@@ -79,39 +79,41 @@ const userCotroller = {
       res.status(400).json({ message: "Invalid or expired token" });
     }
   },
-  signin: async (req, res) => {
-    if (!req.body.email || !req.body.password) {
-      return res.status(400).json({ message: "fill all the blanks" });
-    }
-    try {
-      const isExistUser = await userModel.findOne({ email: req.body.email });
+ signin: async (req, res) => {
+  if (!req.body.email || !req.body.password) {
+    return res.status(400).json({ message: "fill all the blanks" });
+  }
+  try {
+    const isExistUser = await userModel.findOne({ email: req.body.email });
 
-      if (!isExistUser) {
-        return res.status(400).json({ message: "plese create accoun first" });
-      }
-      const isMatch = await bcrypt.compare(
-        req.body.password,
-        isExistUser.password
-      );
-      if (!isMatch) {
-        return res.status(400).json({ message: "invalid password " });
-      }
-      const { password, ...rest } = isExistUser._doc;
-      const { token } = generateOTPandToken({ ...rest }, "30d");
-      if (!token) {
-        return res.status(400).json({ message: "invalid  token" });
-      }
-      res
-        .cookie("access_token", token, {
-          httpOnly: true,
-          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds
-        })
-        .status(200)
-        .json({ message: "login successfully", rest });
-    } catch (error) {
-      return res.status(400).json({ message: error.message });
+    if (!isExistUser) {
+      return res.status(400).json({ message: "please create account first" });
     }
-  },
+    const isMatch = await bcrypt.compare(req.body.password, isExistUser.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: "invalid password" });
+    }
+
+    const { password, ...rest } = isExistUser._doc;
+    const { token } = generateOTPandToken({ ...rest }, "30d");
+
+    if (!token) {
+      return res.status(400).json({ message: "invalid token" });
+    }
+
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production", 
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax", 
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      })
+      .status(200)
+      .json({ message: "login successfully", rest });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+},
   updateUserdata: async (req, res) => {
     if (req.params.userId != req.user._id) {
       return res
