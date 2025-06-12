@@ -27,10 +27,18 @@ const userCotroller = {
         }
       );
       await sendMail(email, htmltemplate, "otp verification");
-      res.cookie("verification_token", token).status(200).json({
-        message: "otp send successfully",
-        token: token,
-      });
+        res
+        .cookie("verification_token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        })
+
+        .status(200)
+        .json({
+          message: "otp send successfully",
+        });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: error.message });
