@@ -14,7 +14,8 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(cors({
-  origin: ["https://i-herb-ten.vercel.app","http://localhost:5173"]
+  // origin: ["https://i-herb-ten.vercel.app","http://localhost:5173"]
+  origin : "http://localhost:5173"
   credentials: true,
 }));
 
