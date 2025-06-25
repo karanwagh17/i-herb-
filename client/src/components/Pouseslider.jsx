@@ -8,13 +8,9 @@ const ProductSlider = () => {
   const productData = async () => {
     try {
       const res = await axios.get(
-        `${
-          import.meta.env.VITE_BASEURL
-        }/api/product/getproducts/?category=iherb_live`
+        `${import.meta.env.VITE_BASEURL}/api/product/getproducts/?category=iherb_live`
       );
-
       setProduct(res.data);
-      console.log(res.data )
     } catch (error) {
       console.log(error);
     }
@@ -30,39 +26,50 @@ const ProductSlider = () => {
   const sliderRef = useRef(null);
   const intervalRef = useRef(null);
 
+  // Modified next function for infinite loop
   const next = () => {
-    setIndex((prev) => (prev + 1) % (products.length - visibleCards + 1));
+    setIndex((prev) => (prev + 1) % products.length);
   };
 
+  // Modified prev function for infinite loop
   const prev = () => {
-    setIndex((prev) =>
-      prev - 1 < 0 ? products.length - visibleCards : prev - 1
-    );
+    setIndex((prev) => (prev - 1 + products.length) % products.length);
+  };
+
+  // Get the visible products with wrap-around
+  const getVisibleProducts = () => {
+    if (products.length === 0) return [];
+    
+    const visible = [];
+    for (let i = 0; i < visibleCards; i++) {
+      visible.push(products[(index + i) % products.length]);
+    }
+    return visible;
   };
 
   useEffect(() => {
     const updateVisibleCards = () => {
       if (sliderRef.current) {
         const width = sliderRef.current.offsetWidth;
-        const cardWidth = 160;
-        const count = Math.floor(width / cardWidth);
-        setVisibleCards(count);
+        const cardWidth = 160; // Adjust this based on your card width
+        const count = Math.min(Math.floor(width / cardWidth), products.length);
+        setVisibleCards(Math.max(count, 1)); // Ensure at least 1 card is visible
       }
     };
 
     updateVisibleCards();
     window.addEventListener("resize", updateVisibleCards);
     return () => window.removeEventListener("resize", updateVisibleCards);
-  }, []);
+  }, [products.length]);
 
   useEffect(() => {
-    if (isPlaying) {
+    if (isPlaying && products.length > 0) {
       intervalRef.current = setInterval(next, 3000);
     } else {
       clearInterval(intervalRef.current);
     }
     return () => clearInterval(intervalRef.current);
-  }, [isPlaying, visibleCards]);
+  }, [isPlaying, products.length]);
 
   return (
     <div className="slider-wrapper-pouse">
@@ -83,17 +90,19 @@ const ProductSlider = () => {
         </button>
 
         <div className="slider" ref={sliderRef}>
-          {products &&
-            products.length > 0 &&
-            products.slice(index, index + visibleCards).map((product, i) => (
-              <div className="product-card" key={i}>
-                <img src={product.image[0]} alt={product.name}  style={{backgroundColor:"white"}}/>
-                <p className="name">{product.title}</p>
-                <p className="price">  ₹{product.price}</p>
-                <p className="country">{product.category}</p>
-                <p className="rating">⭐⭐⭐⭐ {product.reviews}</p>
-              </div>
-            ))}
+          {getVisibleProducts().map((product, i) => (
+            <div className="product-card" key={`${product._id}-${i}`}>
+              <img
+                src={product.image[0]}
+                alt={product.name}
+                style={{ backgroundColor: "white" }}
+              />
+              <p className="name">{product.title}</p>
+              <p className="price"> ₹{product.price}</p>
+              <p className="country">{product.category}</p>
+              <p className="rating">⭐⭐⭐⭐ {product.reviews}</p>
+            </div>
+          ))}
         </div>
 
         <button className="arrow right" onClick={next}>
