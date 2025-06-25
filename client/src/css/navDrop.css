@@ -13,6 +13,8 @@
   font-family: Arial, sans-serif;
 }
 
+
+
 .rewards-box {
   width: 50%;
   background: #f9f9f9;
@@ -102,14 +104,34 @@
 }
 
 @media (min-width: 0px) and (max-width: 480px) {
-
-  .account-dropdown-panel {
-    width: 100%;
-    left: 0;
-    right: 0;
-    top: 150px;
-    border-radius: 0;
-    box-shadow: none;
+    .account-dropdown-panel {
+        width: 90%;
+        left: 31px;
+        right: 0;
+        top: 47px;
+        border-radius: 0;
+        box-shadow: none;
+    }
+  .rewards-box {
+    background-color: #e6f7e6;
+    padding: 15px;
+    border-radius: 8px;
+    max-width: 300px;
+    width: 46% 163.297px;
+    font-size: 8px;
   }
+  .account-actions li {
+    display: flex
+;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 11px;
+    color: #222;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.sign-button{
+  font-size: 7px;
+}
 
 }
