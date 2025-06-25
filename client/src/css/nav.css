@@ -12,6 +12,11 @@
   align-items: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+input.search-input::placeholder {
+    font-size: 15px;
+    position: relative;
+    bottom: 0px;
+}
 
 .search-wrapper {
   width: 100%;
@@ -179,7 +184,7 @@
     justify-content: space-between;
   }
 } */
-@media (min-width: 481px) and (max-width: 767px) {
+@media (min-width: 0px) and (max-width: 767px) {
   .logo {
     padding: 0px 8px;
     font-size: 17px;
@@ -193,13 +198,75 @@
     font-size: 30px;
     margin-left: -20px;
     position: relative;
-    right:-19px;
+    right: -19px;
     top: 8px;
   }
   .account-dropdown {
     font-weight: bold;
     cursor: pointer;
     font-size: 13px;
+  }
 }
-
+@media (min-width: 0px) and (max-width: 480px) {
+  .navbar {
+    padding: 10px 15px;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .navbar-left {
+    flex-direction: row;
+    width: 30%;
+    justify-content: start;
+  }
+  .logo {
+    padding: 0px 8px;
+    font-size: 17px;
+  }
+  .search-wrapper {
+    width: 136px;
+    display: flex;
+    justify-content: center;
+    height: 25px;
+  }
+  .search-icon {
+    font-size: 24px;
+    margin-left: -38px;
+    position: relative;
+    right: -13px;
+    top: 0px;
+  }
+  .account-dropdown {
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+  }
+input.search-input::placeholder {
+    font-size: 11px;
+    position: relative;
+    bottom: 3px;
+}
+  .account-dropdown {
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 7px;
+  }
+  .cart {
+    position: relative;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .cart-count {
+    position: absolute;
+    top: -3px;
+    right: -10px;
+    background: white;
+    color: #5a9c00;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 50%;
+    font-size: 7px;
+  }
+  .user-icon {
+    font-size: 13px;
+  }
 }
