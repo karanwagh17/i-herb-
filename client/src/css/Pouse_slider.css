@@ -50,12 +50,32 @@
   width: 150px;
   flex-shrink: 0;
   text-align: center;
+   flex: 0 0 300px; 
+  background-color: white;
+  
+ 
+ 
+
+  
 }
+.main-product .product-card {
+  flex: 0 0 300px; 
+  background-color: white;
+  border: 1px solid #ddd;
+  padding: 15px 1px;
+  border-radius: 8px;
+  text-align: center;
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
 
 .slider-wrapper-pouse .product-card img {
   width: 80px;
   height: auto;
   margin-bottom: 5px;
+      height: 177px;
+    width: 131px;
 }
 
 .slider-wrapper-pouse .product-card .name {
