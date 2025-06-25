@@ -21,6 +21,7 @@ const ProductSlider = ({ title, category }) => {
           }/api/product/getproducts?category=${category}`
         );
         setProducts(res.data);
+        console.log("Fetched products:", res.data);
       } catch (error) {
         console.error("Error fetching products", error);
       }
@@ -80,12 +81,12 @@ const ProductSlider = ({ title, category }) => {
           &#10094;
         </div>
 
-        <div className="product-list">
-          {visibleProducts.map((product, index) => (
+        <div className="product-list main-product">
+          {Array.isArray(visibleProducts) && visibleProducts.length > 0 ?(visibleProducts.map((product, index) => (
             <div key={index} className="product-card">
               <Link to={`description/${product._id}`} style={{ textDecoration: "none" }}>
                 {" "}
-                <img src={product.image[0]} alt={product.title} />
+                <img src={product?.image[0]} alt={product.title}  style={{backgroundColor:"white"}}/>
                 <p className="title">{product.title}</p>
                 <p className="rating">
                   {"★".repeat(5)}{" "}
@@ -110,7 +111,8 @@ const ProductSlider = ({ title, category }) => {
                 Add to Cart
               </button>
             </div>
-          ))}
+          ))) : (
+            <p>Loading products...</p>)}
         </div>
 
         <div className="arrow-btn right" onClick={next}>
